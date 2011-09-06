@@ -23,7 +23,7 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 	/**
 	 * @param args
 	 */
-	public void crawlDangDang() {
+	public void testDangDang() {
 		// TODO Auto-generated method stub
 		boolean n1=false;
 		boolean n2=false;

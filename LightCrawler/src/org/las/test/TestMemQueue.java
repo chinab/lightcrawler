@@ -9,7 +9,7 @@ public class TestMemQueue extends TestCase {
 	/**
 	 * @param args
 	 */
-	public void addQueue() {
+	public void testAddQueue() {
 
 		FetchQueue queue = new FetchQueue();
 		int count =0;

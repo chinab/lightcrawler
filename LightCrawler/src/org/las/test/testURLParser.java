@@ -11,7 +11,7 @@ public class testURLParser extends TestCase {
 	 * @param args
 	 * @throws MalformedURLException 
 	 */
-	public void buildURL() throws MalformedURLException {
+	public void testBuildURL() throws MalformedURLException {
 
 		String href = "http://www.nap.edu/catalog.php?record_id=13117";
 		String context = "http://sites.nationalacademies.org/SSB/ssb_051650";
