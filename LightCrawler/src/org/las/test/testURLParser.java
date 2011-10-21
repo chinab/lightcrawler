@@ -1,7 +1,8 @@
 package org.las.test;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+
+import org.las.tools.URLCanonicalizer;
 
 import junit.framework.TestCase;
 
@@ -13,10 +14,10 @@ public class testURLParser extends TestCase {
 	 */
 	public void testBuildURL() throws MalformedURLException {
 
-		String href = "http://www.nap.edu/catalog.php?record_id=13117";
-		String context = "http://sites.nationalacademies.org/SSB/ssb_051650";
-		URL url = new URL(new URL(context), href);
-		System.out.println(url);
+		String href = "?record_id=13117";
+		String context = "http://www.nap.edu/new/age/cab";
+		System.out.println(URLCanonicalizer.getCanonicalURL(href,context));
+		System.out.println(URLCanonicalizer.getAbsoluteURL(context, href));
 	}
 
 }

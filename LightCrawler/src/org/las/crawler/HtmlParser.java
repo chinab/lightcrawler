@@ -71,7 +71,7 @@ public class HtmlParser {
 
 		bulletParser.setCallback(linkExtractor);
 		bulletParser.parse(chars);
-
+		
 		int urlCount = 0;
 		for (URLEntity link : linkExtractor.getLinks()) {
 			String href = link.getUrl();
@@ -81,7 +81,11 @@ public class HtmlParser {
 			}
 			if (href.indexOf("javascript:") < 0
 					&& href.indexOf("@") < 0) {
-				URL url = URLCanonicalizer.getCanonicalURL(href, page.getUrl());
+				String baseUrl = linkExtractor.base();
+				if(baseUrl==null || baseUrl.length()==0){
+					baseUrl = page.getUrl();
+				}
+				URL url = URLCanonicalizer.getCanonicalURL(baseUrl, href);
 				if (url != null) {
 					link.setUrl(url.toExternalForm());
 					link.setParent_url(page.getUrl());

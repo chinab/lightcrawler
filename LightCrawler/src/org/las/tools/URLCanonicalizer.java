@@ -1,6 +1,8 @@
 package org.las.tools;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -20,29 +22,29 @@ public final class URLCanonicalizer {
 		return null;
 	}
 
-	public static URL getCanonicalURL(String href, String context) {
+	public static URL getCanonicalURL(String baseURI, String relativePath) {
 		
 		//remove self link
-		if (href.contains("#")) {
-            href = href.substring(0, href.indexOf("#"));
+		if (relativePath.contains("#")) {
+			relativePath = relativePath.substring(0, relativePath.indexOf("#"));
         }
 		//format url
-		if(href.lastIndexOf('/')>=0 && href.lastIndexOf('/') == href.length()-1){
-			href = href.substring(0, href.length()-1);
+		if(relativePath.lastIndexOf('/')>=0 && relativePath.lastIndexOf('/') == relativePath.length()-1){
+			relativePath = relativePath.substring(0, relativePath.length()-1);
 		}
 		//build full href with context
         try {
-        	if (context == null) {
-        		return new URL(href);
+        	if (baseURI == null) {
+        		return new URL(relativePath);
         	} else {
-        		if(href.indexOf('?')==0){
-        			if(context.indexOf('?')>=0){
-        				return new URL(context.substring(0,context.indexOf('?'))+href);
+        		if(relativePath.indexOf('?')==0){
+        			if(baseURI.indexOf('?')>=0){
+        				return new URL(baseURI.substring(0,baseURI.indexOf('?'))+relativePath);
         			}else{
-        				return new URL(context+href);
+        				return new URL(baseURI+relativePath);
         			}
         		}else{
-        			return new URL(new URL(context), href);
+        			return new URL(new URL(baseURI), relativePath);
         		}
         	}
         } catch (MalformedURLException ex) {
@@ -50,4 +52,19 @@ public final class URLCanonicalizer {
         }
         
 	}
+	
+	public static URL getAbsoluteURL(String baseURI, String relativePath) {
+		URL absURL = null;
+		try {
+			URI base = new URI(baseURI);
+			URI abs = base.resolve(relativePath);
+			absURL = abs.toURL();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} 
+		return absURL;
+	}
+
 }
