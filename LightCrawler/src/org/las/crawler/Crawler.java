@@ -166,10 +166,10 @@ public class Crawler extends Thread{
 					String format = page.getFormat();
 					if (format != null) {
 						Set<URLEntity> links = new HashSet<URLEntity>();
-						if (format.indexOf("text/html") > -1) {
+						if (format.indexOf("html") > -1) {
 							links = htmlparser.parse(page);
 						}
-						if (format.indexOf("text/xml") > -1) {
+						if (format.indexOf("xml") > -1) {
 							links = feedparser.parse(page);
 						}
 

@@ -27,8 +27,8 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 		// init
 		FetchQueue queue = new FetchQueue();
 		URLEntity start_urlEntity = new URLEntity();
-		String start_url = "http://www.awi.de/en/news/press_releases/";
-		String url_filter = "http://www.awi.de/en/news/press_releases/detail/item/.+";
+		String start_url = "http://archive.nstl.gov.cn/Archives/logon.do?action=applyForm";
+		String url_filter = ".*";
 		//String start_url = "http://www.sciencebusiness.net/RssFeeds.aspx?TypeId=6";
 		//String url_filter = ".+";
 		start_urlEntity.setUrl(start_url);
@@ -69,7 +69,7 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 							//System.out.println(url);
 							if (!filters.matcher(url.toLowerCase()).matches()) {
 								if (url.matches(url_filter)) {
-									System.out.println(url);
+									//System.out.println(url);
 									link.setDepth(fetch_urlEntity.getDepth() + 1);
 									queue.enQueue(link);
 								}

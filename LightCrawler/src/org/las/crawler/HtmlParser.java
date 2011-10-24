@@ -86,6 +86,12 @@ public class HtmlParser {
 					baseUrl = page.getUrl();
 				}
 				URL url = URLCanonicalizer.getCanonicalURL(baseUrl, href);
+				if(url.toExternalForm().contains("2011")){
+				System.out.println("B="+baseUrl);
+				System.out.println("H="+href);
+				System.out.println("A="+url.toExternalForm());
+				}
+				
 				if (url != null) {
 					link.setUrl(url.toExternalForm());
 					link.setParent_url(page.getUrl());

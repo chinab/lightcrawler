@@ -362,7 +362,7 @@ public final class Fetcher {
 	public static void main(String[] args){
 		Fetcher fetcher = new Fetcher();
 		URLEntity urlEntity = new URLEntity();
-		String url = "http://archive.nstl.gov.cn/";
+		String url = "http://www.isro.org/pressrelease/scripts/pressrelease.aspx";
 		urlEntity.setUrl(url);
 		PageEntity page = new PageEntity();
 		int status_code = fetcher.fetch(urlEntity, page);

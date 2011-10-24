@@ -78,7 +78,11 @@ public class LinkExtractor extends DefaultCallback {
 			s = attrMap.get(Attribute.HREF);
 			if (s != null) {
 				anchor_flag = true;
-				url_buf.append(s.toString().trim());
+				String url = s.toString().trim();
+				if(url.length()>0){
+					link_buf = new URLEntity(url);
+					links.add(link_buf);
+				}
 			}
 			return true;
 		} else if (element == Element.IMG) {
@@ -152,12 +156,8 @@ public class LinkExtractor extends DefaultCallback {
 		if (element == Element.A || element == Element.AREA
 				|| element == Element.LINK) {
 			anchor_flag = false;
-			String url = url_buf.toString().trim();
-			if(url.length()>0){
-				URLEntity link = new URLEntity(url);
-				link.setAnchor_text(anchorText_buf.toString().trim());
-				links.add(link);
-				url_buf.delete(0, url_buf.length());
+			if(link_buf!=null){
+				link_buf.setAnchor_text(anchorText_buf.toString().trim());
 				anchorText_buf.delete(0, anchorText_buf.length());
 			}
 		}
@@ -210,7 +210,7 @@ public class LinkExtractor extends DefaultCallback {
 	}
 
 
-	private StringBuffer url_buf = new StringBuffer();
+	private URLEntity link_buf = null;
 	private StringBuffer anchorText_buf = new StringBuffer();
 	private boolean anchor_flag = false;
 	
