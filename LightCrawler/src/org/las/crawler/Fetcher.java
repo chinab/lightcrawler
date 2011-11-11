@@ -30,6 +30,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.las.tools.Md5;
 import org.las.tools.URLCanonicalizer;
+import org.las.tools.MIMEFormater.MIMEFormater;
 
 
 public final class Fetcher {
@@ -39,6 +40,7 @@ public final class Fetcher {
 	private ThreadSafeClientConnManager connectionManager;
 
 	private DefaultHttpClient httpclient;
+	private MIMEFormater mimeFormater;
 	
 	private final int MAX_DOWNLOAD_SIZE = Config.getIntProperty(
 			"fetcher.max_download_size", 1048576);
@@ -89,6 +91,7 @@ public final class Fetcher {
 		httpclient = new DefaultHttpClient(connectionManager, params);
 		DefaultHttpRequestRetryHandler handler = new DefaultHttpRequestRetryHandler(3,true);
 		httpclient.setHttpRequestRetryHandler(handler); 
+		mimeFormater = new MIMEFormater();
 	}
 
 	public int fetch(URLEntity urlEntity, PageEntity page) {
@@ -126,28 +129,32 @@ public final class Fetcher {
 					return Fetcher.PageTooBig;
 				}
 				String encode = getContentEncode(response);
-				String format = getContentType(urlEntity, response);
+				String type = getContentType(urlEntity, response);
 				
-				if(format.indexOf(';')>=0){
-					String[] str = format.split(";");
-					format = str[0];
+				if(type.indexOf(';')>=0){
+					String[] str = type.split(";");
+					type = str[0];
 					if(encode==null && str.length>1){
 						encode = str[1].trim().replaceAll("charset=", "");
 					}
 				}
 				
-				byte[] content = downloadContent(response);
-				String md5 = Md5.getDigest("mycrawler", content);
+				final byte[] content = downloadContent(response);
+				final String md5 = Md5.getDigest(content);
+				final String format = mimeFormater.JudgeFormat(url, type);
+				
 				if (content!=null) {
 					size = content.length;
 					page.setUrl(url);
 					page.setContent(content);
 					page.setSize(size);
 					page.setEncode(encode);
-					page.setFormat(format);
+					page.setType(type);
 					page.setDownloadDate(new Date());
 					page.setAnchorText(urlEntity.getAnchor_text());
 					page.setDigest(md5);
+					page.setFormat(format);
+					
 					if(urlEntity.getTitle()!=null){
 						page.setTitle(urlEntity.getTitle());
 					}
@@ -362,7 +369,7 @@ public final class Fetcher {
 	public static void main(String[] args){
 		Fetcher fetcher = new Fetcher();
 		URLEntity urlEntity = new URLEntity();
-		String url = "http://www.isro.org/pressrelease/scripts/pressrelease.aspx";
+		String url = "http://ckan.net/api/rest/package";
 		urlEntity.setUrl(url);
 		PageEntity page = new PageEntity();
 		int status_code = fetcher.fetch(urlEntity, page);

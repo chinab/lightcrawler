@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import org.las.tools.Formater;
+import org.las.tools.MIMEFormater.MIMEFormater;
 
 
 public class FeedParser {
@@ -25,7 +25,7 @@ public class FeedParser {
 				URLEntity link = new URLEntity();
 				link.setUrl(entry.getUri());
 				link.setParent_url(page.getUrl());
-				link.setSuffix(Formater.JudgeURLFormat(entry.getUri()));
+				link.setSuffix(MIMEFormater.JudgeURLFormat(entry.getUri()));
 				link.setTitle(entry.getTitle());
 				link.setDiscription(entry.getDescription().getValue());
 				link.setPublishData(entry.getPublishedDate());
@@ -54,7 +54,7 @@ public class FeedParser {
 			for (Object o:feed.getEntries()) {
 				SyndEntry entry = (SyndEntry) o;
 				System.out.println("Title: "+entry.getTitle());
-				System.out.println("Abstract: "+entry.getDescription().getValue());
+				//System.out.println("Abstract: "+entry.getDescription().getValue());
 				System.out.println("PubDate: "+entry.getPublishedDate());
 				System.out.println("Link: "+entry.getUri());
 				System.out.println();

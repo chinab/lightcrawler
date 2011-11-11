@@ -12,7 +12,6 @@ import org.las.crawler.HtmlParser;
 import org.las.crawler.FeedParser;
 import org.las.crawler.PageEntity;
 import org.las.crawler.URLEntity;
-import org.las.tools.Formater;
 
 
 public class testdangdang extends TestCase {
@@ -39,7 +38,6 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 		String start_url = "http://list.dangdang.com/book/01.htm?ref=book-01-A";
 		start_urlEntity.setUrl(start_url);
 		start_urlEntity.setDepth(1);
-		start_urlEntity.setSuffix(Formater.JudgeURLFormat(start_url));
 		queue.enQueue(start_urlEntity);
 		
 		//初始化抓取器
@@ -77,16 +75,16 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 			int status_code = fetcher.fetch(fetch_urlEntity, page);
 			if (status_code == Fetcher.OK) {
 				System.out.println(">>>>>Depth = "+ fetch_urlEntity.getDepth() + " <<<<<<<<<<");
-				String format = page.getFormat();
+				String type = page.getType();
 				//根据页面类型确定是否要解析页面（如：富文档等不需要解析）
-				if (format != null) {
+				if (type != null) {
 					
 					//根据页面类型调用不同的解析器
 					Set<URLEntity> links = new HashSet<URLEntity>();
-					if(format.indexOf("text/html") > -1){
+					if(type.indexOf("text/html") > -1){
 						links = htmlparser.parse(page);
 					}
-					if(format.indexOf("text/xml") > -1){
+					if(type.indexOf("text/xml") > -1){
 						links = feedparser.parse(page);
 					}
 					

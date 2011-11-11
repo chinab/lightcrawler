@@ -12,7 +12,6 @@ import org.las.crawler.HtmlParser;
 import org.las.crawler.FeedParser;
 import org.las.crawler.PageEntity;
 import org.las.crawler.URLEntity;
-import org.las.tools.Formater;
 
 public class testCrawler extends TestCase {
 
@@ -27,13 +26,12 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 		// init
 		FetchQueue queue = new FetchQueue();
 		URLEntity start_urlEntity = new URLEntity();
-		String start_url = "http://archive.nstl.gov.cn/Archives/logon.do?action=applyForm";
+		String start_url = "http://www.scidev.net/en/science-communication/news/gates-tells-g20-innovation-is-the-key-to-development.html?utm_source=link&utm_medium=rss&utm_campaign=en_sciencecommunication";
 		String url_filter = ".*";
 		//String start_url = "http://www.sciencebusiness.net/RssFeeds.aspx?TypeId=6";
 		//String url_filter = ".+";
 		start_urlEntity.setUrl(start_url);
 		start_urlEntity.setDepth(1);
-		start_urlEntity.setSuffix(Formater.JudgeURLFormat(start_url));
 		queue.enQueue(start_urlEntity);
 		Fetcher fetcher = new Fetcher();
 		HtmlParser htmlparser = new HtmlParser();
@@ -52,13 +50,13 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 			int status_code = fetcher.fetch(fetch_urlEntity, page);
 			if (status_code == Fetcher.OK) {
 				System.out.println(">>>>>Depth = "+ fetch_urlEntity.getDepth() + " <<<<<<<<<<");
-				String format = page.getFormat();
-				if (format != null) {
+				String type = page.getType();
+				if (type != null) {
 					Set<URLEntity> links = new HashSet<URLEntity>();
-					if(format.indexOf("html") > -1){
+					if(type.indexOf("html") > -1){
 						links = htmlparser.parse(page);
 					}
-					if(format.indexOf("xml") > -1){
+					if(type.indexOf("xml") > -1){
 						links = feedparser.parse(page);
 					}
 					

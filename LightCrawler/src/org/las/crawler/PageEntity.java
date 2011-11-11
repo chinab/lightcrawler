@@ -7,6 +7,7 @@ public class PageEntity {
 	private int id;
 	private String url;
 	private String title;
+	private String type;
 	private String format;
 	private String encode;
 	private long size;
@@ -14,13 +15,12 @@ public class PageEntity {
 	private byte[] content;
 	private String anchorText;
 	private String discription;
-	private String parseText;
-	private String parseHtmlText;
+	private String extractText;
+	private String extractHtml;
 	private String lang;
 	private long fingerPrint;
 	private Date publishData;
 	private Date downloadDate;
-	private boolean isNew = true;
 	private Set<String> links;
 	
 	
@@ -41,6 +41,12 @@ public class PageEntity {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public String getFormat() {
 		return format;
@@ -72,29 +78,23 @@ public class PageEntity {
 	public void setAnchorText(String anchorText) {
 		this.anchorText = anchorText;
 	}
-	public String getParseText() {
-		return parseText;
+	public String getExtractText() {
+		return extractText;
 	}
-	public void setParseText(String parseText) {
-		this.parseText = parseText;
+	public void setExtractText(String extractText) {
+		this.extractText = extractText;
 	}
-	public String getParseHtmlText() {
-		return parseHtmlText;
+	public String getExtractHtml() {
+		return extractHtml;
 	}
-	public void setParseHtmlText(String parseHtmlText) {
-		this.parseHtmlText = parseHtmlText;
+	public void setExtractHtml(String extractHtml) {
+		this.extractHtml = extractHtml;
 	}
 	public String getLang() {
 		return lang;
 	}
 	public void setLang(String lang) {
 		this.lang = lang;
-	}
-	public boolean isNew() {
-		return isNew;
-	}
-	public void setNew(boolean isNew) {
-		this.isNew = isNew;
 	}
 	public String getEncode() {
 		return encode;
@@ -131,8 +131,8 @@ public class PageEntity {
 	}
 	public void setFingerPrint(long fingerPrint) {
 		this.fingerPrint = fingerPrint;
-	}
-	
+	}	
+		
 	public void print(){
 		System.out.println();
 		System.out.println("---------------------------------");

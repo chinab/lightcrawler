@@ -12,6 +12,7 @@ public class URLEntity {
 	private String discription;
 	private Date publishData;
 	private int depth;
+	private String suffix;
 	
 	public URLEntity(){		
 	}
@@ -43,9 +44,6 @@ public class URLEntity {
 	public void setPublishData(Date publishData) {
 		this.publishData = publishData;
 	}
-	private String suffix;
-	
-	
 	public int getId() {
 		return id;
 	}

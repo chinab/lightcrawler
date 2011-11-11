@@ -163,13 +163,13 @@ public class Crawler extends Thread{
 				if (status_code == Fetcher.OK) {
 					System.out.println(">>>>>Depth = "
 							+ fetch_urlEntity.getDepth() + " <<<<<<<<<<");
-					String format = page.getFormat();
-					if (format != null) {
+					String type = page.getType();
+					if (type != null) {
 						Set<URLEntity> links = new HashSet<URLEntity>();
-						if (format.indexOf("html") > -1) {
+						if (type.indexOf("html") > -1) {
 							links = htmlparser.parse(page);
 						}
-						if (format.indexOf("xml") > -1) {
+						if (type.indexOf("xml") > -1) {
 							links = feedparser.parse(page);
 						}
 

@@ -11,6 +11,7 @@ import java.util.Set;
 import org.las.tools.*;
 import org.las.tools.FingerPrinter.FingerPrinter;
 import org.las.tools.LanguageIdentifier.LanguageIdentifier;
+import org.las.tools.MIMEFormater.MIMEFormater;
 
 
 public class HtmlParser {
@@ -18,8 +19,8 @@ public class HtmlParser {
 	private BulletParser bulletParser;
 	private TextExtractor textExtractor;
 	private LinkExtractor linkExtractor;
+	
 	private LanguageIdentifier langIdentifier;
-
 	private static final int MAX_OUT_LINKS = Config.getIntProperty(
 			"fetcher.max_outlinks", 500);
 
@@ -50,25 +51,22 @@ public class HtmlParser {
 
 		bulletParser.setCallback(textExtractor);
 		bulletParser.parse(chars);
-		String text = textExtractor.text.toString().trim();
-		String htmltext = null;
-		try {
-			htmltext = new String(page.getContent(),encode);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		String title = textExtractor.title.toString().trim();
+		String text = textExtractor.text.toString().trim();
 		String lang = langIdentifier.identify(text);
-		long fingerprint = FingerPrinter.getLongCode(text);
-				
+		long fingerPrint = FingerPrinter.getLongCode(text);
+		
 		if(page.getTitle()==null){
-			page.setTitle(title);
+			if(title == null || title.length()==0){
+				page.setTitle(page.getAnchorText());
+			}else{
+				page.setTitle(title);
+			}
 		}
-		page.setParseText(text);
-		page.setParseHtmlText(htmltext);
+		page.setExtractText(text);
 		page.setLang(lang);
-		page.setFingerPrint(fingerprint);
-
+		page.setFingerPrint(fingerPrint);
+		
 		bulletParser.setCallback(linkExtractor);
 		bulletParser.parse(chars);
 		
@@ -89,7 +87,7 @@ public class HtmlParser {
 				if (url != null) {
 					link.setUrl(url.toExternalForm());
 					link.setParent_url(page.getUrl());
-					link.setSuffix(Formater.JudgeURLFormat(link.getUrl()));
+					link.setSuffix(MIMEFormater.JudgeURLFormat(link.getUrl()));
 					links.add(link);
 					urlCount++;
 					if (urlCount > MAX_OUT_LINKS) {
