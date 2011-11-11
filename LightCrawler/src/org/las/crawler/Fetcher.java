@@ -140,7 +140,7 @@ public final class Fetcher {
 				}
 				
 				final byte[] content = downloadContent(response);
-				final String md5 = Md5.getDigest(content);
+				final String md5 = Md5.getDigest("mycrawler",content);
 				final String format = mimeFormater.JudgeFormat(url, type);
 				
 				if (content!=null) {
