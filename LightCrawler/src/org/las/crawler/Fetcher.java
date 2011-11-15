@@ -96,6 +96,7 @@ public final class Fetcher {
 
 	public int fetch(URLEntity urlEntity, PageEntity page) {
 		String toFetchURL = urlEntity.getUrl();
+		toFetchURL.replaceAll(" ", "%20");
 		HttpGet get = new HttpGet(toFetchURL);
 		HttpEntity entity = null;
 		try {
