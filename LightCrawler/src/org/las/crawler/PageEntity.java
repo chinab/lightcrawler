@@ -15,8 +15,8 @@ public class PageEntity {
 	private byte[] content;
 	private String anchorText;
 	private String discription;
-	private String extractText;
-	private String extractHtml;
+	private String parseText;
+	private String parseHtml;
 	private String lang;
 	private long fingerPrint;
 	private Date publishData;
@@ -78,17 +78,18 @@ public class PageEntity {
 	public void setAnchorText(String anchorText) {
 		this.anchorText = anchorText;
 	}
-	public String getExtractText() {
-		return extractText;
+	
+	public String getParseText() {
+		return parseText;
 	}
-	public void setExtractText(String extractText) {
-		this.extractText = extractText;
+	public void setParseText(String parseText) {
+		this.parseText = parseText;
 	}
-	public String getExtractHtml() {
-		return extractHtml;
+	public String getParseHtml() {
+		return parseHtml;
 	}
-	public void setExtractHtml(String extractHtml) {
-		this.extractHtml = extractHtml;
+	public void setParseHtml(String parseHtml) {
+		this.parseHtml = parseHtml;
 	}
 	public String getLang() {
 		return lang;

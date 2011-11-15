@@ -63,7 +63,7 @@ public class HtmlParser {
 				page.setTitle(title);
 			}
 		}
-		page.setExtractText(text);
+		page.setParseText(text);
 		page.setLang(lang);
 		page.setFingerPrint(fingerPrint);
 		
