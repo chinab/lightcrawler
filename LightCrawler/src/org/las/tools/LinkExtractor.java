@@ -44,6 +44,10 @@ public class LinkExtractor extends DefaultCallback {
 
 	/** The URL contained in the first <samp>BASE </samp> element (if any). */
 	private String base = null;
+	
+	private String contentType = null;
+	
+	private String charset = null;
 
 	/**
 	 * Configure the parser to parse elements and certain attributes.
@@ -119,6 +123,7 @@ public class LinkExtractor extends DefaultCallback {
 
 		// META REFRESH/LOCATION
 		if (element == Element.META) {
+			System.out.println("----META-----");
 			final MutableString equiv = attrMap.get(Attribute.HTTP_EQUIV);
 			final MutableString content = attrMap.get(Attribute.CONTENT);
 			if (equiv != null && content != null) {
@@ -134,11 +139,26 @@ public class LinkExtractor extends DefaultCallback {
 				}
 
 				// http-equiv="location" content="http://foo.bar/..."
-				if (equiv.equals("location") && (metaLocation == null))
+				if (equiv.equals("location") && (metaLocation == null)){
 					metaLocation = attrMap.get(Attribute.CONTENT).toString();
+				}
+				
+				// http-equiv="content-type" content="http://foo.bar/..."
+				if (equiv.equals("content-type")){
+					contentType = attrMap.get(Attribute.CONTENT).toString();
+					if(contentType.indexOf(';')>=0){
+						String[] str = contentType.split(";");
+						contentType = str[0];
+						if(str.length>1){
+							charset = str[1].trim().replaceAll("charset=", "");
+							System.out.println(charset);
+						}
+					}
+				}
+				
 			}
 		}
-
+		
 		return true;
 	}
 	
@@ -208,6 +228,24 @@ public class LinkExtractor extends DefaultCallback {
 	public Set<URLEntity> getLinks() {
 		return links;
 	}
+	
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getCharset() {
+		return charset;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
+	}
+
+
 
 
 	private URLEntity link_buf = null;

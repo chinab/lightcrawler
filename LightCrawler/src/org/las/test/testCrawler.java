@@ -26,7 +26,7 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 		// init
 		FetchQueue queue = new FetchQueue();
 		URLEntity start_urlEntity = new URLEntity();
-		String start_url = "http://www.scidev.net/en/science-communication/news/gates-tells-g20-innovation-is-the-key-to-development.html?utm_source=link&utm_medium=rss&utm_campaign=en_sciencecommunication";
+		String start_url = "http://rss.news.sohu.com/rss/focus.xml";
 		String url_filter = ".*";
 		//String start_url = "http://www.sciencebusiness.net/RssFeeds.aspx?TypeId=6";
 		//String url_filter = ".+";

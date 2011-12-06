@@ -3,6 +3,7 @@ package org.las.crawler;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -51,7 +52,7 @@ public final class Fetcher {
 		paramsBean.setVersion(HttpVersion.HTTP_1_1);
 		paramsBean.setContentCharset("UTF-8");
 		paramsBean.setUseExpectContinue(true);
-
+		
 		params.setParameter("http.useragent", Config.getStringProperty(
 				"fetcher.user_agent",
 				"mycrawler (http://www.las.ac.cn/)"));
@@ -193,6 +194,10 @@ public final class Fetcher {
 	private byte[] downloadContent(HttpResponse response){
 		try {
 			InputStream is = response.getEntity().getContent();
+			String contentType = getContentEncode(response);
+			if(contentType!=null && contentType.indexOf("gzip")>=0){
+				is = new GZIPInputStream(is);
+			}
 			ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
 			int b = 0;
 			while ((b=is.read())!=-1) {
@@ -370,7 +375,7 @@ public final class Fetcher {
 	public static void main(String[] args){
 		Fetcher fetcher = new Fetcher();
 		URLEntity urlEntity = new URLEntity();
-		String url = "http://ckan.net/api/rest/package";
+		String url = "http://news.sohu.com/20081117/n260686011.shtml";
 		urlEntity.setUrl(url);
 		PageEntity page = new PageEntity();
 		int status_code = fetcher.fetch(urlEntity, page);

@@ -23,6 +23,7 @@ public class HtmlParser {
 	private LanguageIdentifier langIdentifier;
 	private static final int MAX_OUT_LINKS = Config.getIntProperty(
 			"fetcher.max_outlinks", 500);
+	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	public HtmlParser() {
 		bulletParser = new BulletParser();
@@ -33,13 +34,13 @@ public class HtmlParser {
 
 	public Set<URLEntity> parse(PageEntity page) {
 		
-		Set<URLEntity> links = new HashSet<URLEntity>();
+		//Encode by Http protocal
 		String encode = page.getEncode();
 		if(encode==null){
-			encode = "UTF-8";
+			encode = DEFAULT_ENCODING;
 		}
 		if(!encode.equalsIgnoreCase("GBK")&&!encode.equalsIgnoreCase("GB2312")&&!encode.equalsIgnoreCase("ISO-8859-1")){
-			encode = "UTF-8";
+			encode = DEFAULT_ENCODING;
 		}
 		char[] chars = null;
 		try {
@@ -49,28 +50,12 @@ public class HtmlParser {
 			e.printStackTrace();
 		}
 
-		bulletParser.setCallback(textExtractor);
-		bulletParser.parse(chars);
-		String title = textExtractor.title.toString().trim();
-		String text = textExtractor.text.toString().trim();
-		String lang = langIdentifier.identify(text);
-		long fingerPrint = FingerPrinter.getLongCode(text);
-		
-		if(page.getTitle()==null){
-			if(title == null || title.length()==0){
-				page.setTitle(page.getAnchorText());
-			}else{
-				page.setTitle(title);
-			}
-		}
-		page.setParseText(text);
-		page.setLang(lang);
-		page.setFingerPrint(fingerPrint);
-		
+		//extract links 
 		bulletParser.setCallback(linkExtractor);
 		bulletParser.parse(chars);
 		
 		int urlCount = 0;
+		Set<URLEntity> links = new HashSet<URLEntity>();
 		for (URLEntity link : linkExtractor.getLinks()) {
 			String href = link.getUrl();
 			href = href.trim();
@@ -96,6 +81,44 @@ public class HtmlParser {
 				}				
 			}
 		}
+		
+		//reEncode by page contentType
+		if(!encode.equals(linkExtractor.getCharset())){
+			encode = linkExtractor.getCharset();
+			if(encode==null){
+				encode = DEFAULT_ENCODING;
+			}
+			if(!encode.equalsIgnoreCase("GBK")&&!encode.equalsIgnoreCase("GB2312")&&!encode.equalsIgnoreCase("ISO-8859-1")){
+				encode = DEFAULT_ENCODING;
+			}
+			page.setEncode(encode);
+			System.out.println("%%%%%%%%%%%%%%  "+encode+"  %%%%%%%%%%%%%%%5");
+			try {
+				chars = new String(page.getContent(),encode).toCharArray();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//extract content and title
+		bulletParser.setCallback(textExtractor);
+		bulletParser.parse(chars);
+		String title = textExtractor.title.toString().trim();
+		String text = textExtractor.text.toString().trim();
+		String lang = langIdentifier.identify(text);
+		long fingerPrint = FingerPrinter.getLongCode(text);
+		
+		if(page.getTitle()==null){
+			if(title == null || title.length()==0){
+				page.setTitle(page.getAnchorText());
+			}else{
+				page.setTitle(title);
+			}
+		}
+		page.setParseText(text);
+		page.setLang(lang);
+		page.setFingerPrint(fingerPrint);
 		
 		return links;
 	}
