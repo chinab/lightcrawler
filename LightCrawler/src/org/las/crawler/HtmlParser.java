@@ -26,13 +26,14 @@ public class HtmlParser {
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
 	public HtmlParser() {
-		bulletParser = new BulletParser();
-		textExtractor = new TextExtractor();
-		linkExtractor = new LinkExtractor();
+		
 		langIdentifier = new LanguageIdentifier();
 	}
 
 	public Set<URLEntity> parse(PageEntity page) {
+		bulletParser = new BulletParser();
+		textExtractor = new TextExtractor();
+		linkExtractor = new LinkExtractor();
 		
 		//Encode by Http protocal
 		String encode = page.getEncode();
@@ -92,7 +93,6 @@ public class HtmlParser {
 				encode = DEFAULT_ENCODING;
 			}
 			page.setEncode(encode);
-			System.out.println("%%%%%%%%%%%%%%  "+encode+"  %%%%%%%%%%%%%%%5");
 			try {
 				chars = new String(page.getContent(),encode).toCharArray();
 			} catch (UnsupportedEncodingException e) {
