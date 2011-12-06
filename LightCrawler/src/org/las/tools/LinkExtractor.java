@@ -123,7 +123,6 @@ public class LinkExtractor extends DefaultCallback {
 
 		// META REFRESH/LOCATION
 		if (element == Element.META) {
-			System.out.println("----META-----");
 			final MutableString equiv = attrMap.get(Attribute.HTTP_EQUIV);
 			final MutableString content = attrMap.get(Attribute.CONTENT);
 			if (equiv != null && content != null) {
@@ -143,7 +142,7 @@ public class LinkExtractor extends DefaultCallback {
 					metaLocation = attrMap.get(Attribute.CONTENT).toString();
 				}
 				
-				// http-equiv="content-type" content="http://foo.bar/..."
+				// http-equiv="content-type" content="text/html; charset=gbk"
 				if (equiv.equals("content-type")){
 					contentType = attrMap.get(Attribute.CONTENT).toString();
 					if(contentType.indexOf(';')>=0){
@@ -151,7 +150,6 @@ public class LinkExtractor extends DefaultCallback {
 						contentType = str[0];
 						if(str.length>1){
 							charset = str[1].trim().replaceAll("charset=", "");
-							System.out.println(charset);
 						}
 					}
 				}
