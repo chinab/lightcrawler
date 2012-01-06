@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import org.las.tools.URLCanonicalizer;
 import org.las.tools.MIMEFormater.MIMEFormater;
 
 
@@ -20,10 +21,12 @@ public class FeedParser {
 		SyndFeed feed = null;
 		try {
 			feed = input.build(new XmlReader(new ByteArrayInputStream(page.getContent())));
+			String baseUrl = feed.getLink();
 			for (Object o:feed.getEntries()) {
 				SyndEntry entry = (SyndEntry) o;
 				URLEntity link = new URLEntity();
-				link.setUrl(entry.getUri());
+				URL url = URLCanonicalizer.getCanonicalURL(baseUrl, entry.getLink());
+				link.setUrl(url.toExternalForm());
 				link.setParent_url(page.getUrl());
 				link.setSuffix(MIMEFormater.JudgeURLFormat(entry.getUri()));
 				link.setTitle(entry.getTitle());
