@@ -30,8 +30,10 @@ public class FeedParser {
 				link.setParent_url(page.getUrl());
 				link.setSuffix(MIMEFormater.JudgeURLFormat(entry.getUri()));
 				link.setTitle(entry.getTitle());
-				link.setDiscription(entry.getDescription().getValue());
 				link.setPublishData(entry.getPublishedDate());
+				if(entry.getDescription()!=null){
+					link.setDiscription(entry.getDescription().getValue());
+				}
 				links.add(link);
 			}
 		} catch (Exception e) {

@@ -375,7 +375,7 @@ public final class Fetcher {
 	public static void main(String[] args){
 		Fetcher fetcher = new Fetcher();
 		URLEntity urlEntity = new URLEntity();
-		String url = "http://news.sohu.com/20081117/n260686011.shtml";
+		String url = "https://www.llnl.gov/news/newsreleases/";
 		urlEntity.setUrl(url);
 		PageEntity page = new PageEntity();
 		int status_code = fetcher.fetch(urlEntity, page);

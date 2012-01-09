@@ -26,8 +26,8 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 		// init
 		FetchQueue queue = new FetchQueue();
 		URLEntity start_urlEntity = new URLEntity();
-		String start_url = "http://rss.news.sohu.com/rss/focus.xml";
-		String url_filter = ".*";
+		String start_url = "http://web.mit.edu/mitei/news/index.html";
+		String url_filter = "http://web.mit.edu/newsoffice/[0-9]*/.+";
 		//String start_url = "http://www.sciencebusiness.net/RssFeeds.aspx?TypeId=6";
 		//String url_filter = ".+";
 		start_urlEntity.setUrl(start_url);
@@ -64,7 +64,7 @@ static Pattern filters = Pattern.compile(".*(\\.(jpg|rar|tar|mpeg|mpeg-4|avi|tif
 						for (URLEntity link : links) {
 							// filter url
 							String url = link.getUrl();
-							//System.out.println(url);
+							System.out.println(url);
 							if (!filters.matcher(url.toLowerCase()).matches()) {
 								if (url.matches(url_filter)) {
 									//System.out.println(url);
